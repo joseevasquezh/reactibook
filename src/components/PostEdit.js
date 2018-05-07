@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 
 const PostEdit = ({text, onClickSave, onClickCancel}) => (
   <div>
-    <form >
-      <input defaultValue={text}/>
-      <button onClick={onClickSave}>
+    <form onSubmit={e => { e.preventDefault()}} >
+      <input
+        defaultValue={text}
+        ref={node => {this.input = node}}
+      />
+      <button onClick={() => onClickSave(this.input.value)}>
         Guardar
       </button>
       <button  onClick={onClickCancel}>

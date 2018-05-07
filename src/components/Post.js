@@ -24,12 +24,17 @@ class Post extends React.Component {
     });
   }
 
+  savePost(text) {
+    this.props.onClickSave(text);
+    this.goToViewMode();
+  }
+
   render() {
     if (this.state.editMode) {
       return(
         <PostEdit
           text={this.props.text}
-          onClickSave={this.props.onClickSave}
+          onClickSave={(text) => this.savePost(text)}
           onClickCancel={() => this.goToViewMode()}/>
       )
     }
