@@ -8,11 +8,12 @@ export const VisibilityFilters = {
   SHOW_FRIENDS_ONLY: 'SHOW_FRIENDS_ONLY'
 };
 
-export function addPost(id, text) {
+export function addPost(id, text, isPublic) {
   return {
     type: ADD_POST,
     id: id,
     text: text,
+    isPublic: isPublic,
   };
 }
 

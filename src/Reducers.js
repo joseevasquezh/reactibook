@@ -24,6 +24,7 @@ function posts (state = [], action) {
       return state.concat({
           id: action.id,
           text: action.text,
+          isPublic: action.isPublic
       })
     case EDIT_POST:
       return state.map((post, index) => {
