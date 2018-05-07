@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
   ADD_POST,
   EDIT_POST,
+  DELETE_POST,
   SET_VISIBILITY_FILTER,
   VisibilityFilters
 } from './Actions';
@@ -35,6 +36,8 @@ function posts (state = [], action) {
         }
         return post
       })
+    case DELETE_POST:
+      return state.filter(p => !(p.id === action.id))
     default:
       return state;
   }

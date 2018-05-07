@@ -1,5 +1,6 @@
 export const ADD_POST = 'ADD_POST';
 export const EDIT_POST = 'EDIT_POST';
+export const DELETE_POST = 'DELETE_POST';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
 
@@ -22,6 +23,13 @@ export function editPost(id, text) {
     type: EDIT_POST,
     id: id,
     text: text,
+  };
+}
+
+export function deletePost(id) {
+  return {
+    type: DELETE_POST,
+    id: id,
   };
 }
 
