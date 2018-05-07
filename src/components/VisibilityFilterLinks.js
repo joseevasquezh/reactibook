@@ -8,7 +8,7 @@ const VisibilityFilterLinks = ({currentVisibilityFilter, onClickFilter}) => {
     <p>
       <FilterLink
         filter={VisibilityFilters.SHOW_PUBLIC}
-        onClickFilter={() => onClickFilter(VisibilityFilters.SHOW_FRIENDS_ONLY)}
+        onClickFilter={() => onClickFilter(VisibilityFilters.SHOW_PUBLIC)}
         visibilityFilter = {currentVisibilityFilter}
       >
         Público
