@@ -2,16 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const PostView = ({text, onClickEdit, onClickDelete}) => (
-  <div>
-    <p>
-      {text}
-    </p>
-    <button onClick={onClickEdit}>
-      Editar
-    </button>
-    <button  onClick={onClickDelete}>
-      Eliminar
-    </button>
+  <div className="card">
+    <div className="card-body">
+      <p>
+        {text}
+      </p>
+      <div className="text-right">
+        <button
+          className="btn btn-link"
+          onClick={onClickEdit}>
+          Editar
+        </button>
+        <button
+          className="btn btn-link"
+          onClick={onClickDelete}>
+          Eliminar
+        </button>
+      </div>
+    </div>
   </div>
 );
 

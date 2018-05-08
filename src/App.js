@@ -25,18 +25,21 @@ class Wall extends Component {
   render () {
     const visiblePosts = GetVisiblePosts(this.props.store.getState().posts, this.props.store.getState().visibilityFilter);
     return (
-      <div className="wall">
-        <PostAdd onAddPost={(text,visibility) =>
-          this.props.store.dispatch(addPost(nextPostId++,text,(visibility === 'friends' ? false : true)))}/>
-        <VisibilityFilterLinks
-          onClickFilter={(filter) => this.props.store.dispatch(setVisibilityFilter(filter))}
-          currentVisibilityFilter = {this.props.store.getState().visibilityFilter}
-        />
-        <PostList
-          posts={visiblePosts}
-          onClickSave={ (id, text)=> this.props.store.dispatch(editPost(id, text)) }
-          onClickDelete={ (id)=> this.props.store.dispatch(deletePost(id)) }
-        />
+      <div className="row">
+        <div className="col">
+          <h1> Reactibook </h1>
+          <PostAdd onAddPost={(text,visibility) =>
+            this.props.store.dispatch(addPost(nextPostId++,text,(visibility === 'friends' ? false : true)))}/>
+          <VisibilityFilterLinks
+            onClickFilter={(filter) => this.props.store.dispatch(setVisibilityFilter(filter))}
+            currentVisibilityFilter = {this.props.store.getState().visibilityFilter}
+          />
+          <PostList
+            posts={visiblePosts}
+            onClickSave={ (id, text)=> this.props.store.dispatch(editPost(id, text)) }
+            onClickDelete={ (id)=> this.props.store.dispatch(deletePost(id)) }
+          />
+        </div>
       </div>
     );
   }
