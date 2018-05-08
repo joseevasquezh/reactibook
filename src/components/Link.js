@@ -2,13 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Link = ({active, children, onClick }) => {
-  if (active) {
-    return <span>{children}</span>
-  }
-
   return (
     <a
       href=""
+      className={(active ? "btn btn-link disabled" : "btn btn-link " )}
       onClick={e => {
         e.preventDefault()
         onClick()
