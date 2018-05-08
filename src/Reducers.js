@@ -4,6 +4,8 @@ import {
   EDIT_POST,
   DELETE_POST,
   SET_VISIBILITY_FILTER,
+  ADD_LOGGED_USER,
+  REMOVE_LOGGED_USER,
   VisibilityFilters
 } from './Actions';
 
@@ -43,10 +45,22 @@ function posts (state = [], action) {
   }
 }
 
+function loggedUser(state='', action) {
+  switch (action.type) {
+    case ADD_LOGGED_USER:
+      return action.mail
+    case REMOVE_LOGGED_USER:
+      return {}
+    default:
+      return state
+  }
+}
+
 
 const wallApp = combineReducers ({
   visibilityFilter,
   posts,
+  loggedUser,
 })
 
 export default wallApp;
