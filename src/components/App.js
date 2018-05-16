@@ -1,6 +1,6 @@
 import React from 'react';
-import Wall from './containers/Wall';
-import Login from './containers/Login';
+import Wall from './Wall';
+import Login from '../containers/Login';
 
 
 const App = ({isLogged}) => {
