@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import UserContent from './containers/UserContent';
 import registerServiceWorker from './registerServiceWorker';
-
+import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import wallApp from './Reducers';
 
@@ -19,10 +19,14 @@ store.subscribe(() =>
 
 
 const render = () => {
-  ReactDOM.render(<App
-    store={store}
-  />, document.getElementById('root'));
+  ReactDOM.render(
+    <Provider store={store}>
+      <UserContent store={store}/>
+    </Provider>,
+    document.getElementById('root')
+  );
 }
+
 store.subscribe(render);
 render();
 

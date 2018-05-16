@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addPost } from '../Actions';
 
-const PostAdd = ({onAddPost}) => {
+let PostAdd = ({dispatch}) => {
 
   let input;
   let select;
+
+  let nextPostId = 0;
 
   return (
     <div className="card">
@@ -15,7 +18,7 @@ const PostAdd = ({onAddPost}) => {
             if (!input.value.trim()) {
               return
             }
-            onAddPost(input.value, select.value)
+            dispatch(addPost(nextPostId++, input.value, (select.value === 'friends' ? false : true)))
             input.value = ''
           }}
         >
@@ -51,9 +54,6 @@ const PostAdd = ({onAddPost}) => {
   )
 };
 
-
-PostAdd.propTypes = {
-  onAddPost: PropTypes.func.isRequired
-}
+PostAdd = connect ()(PostAdd);
 
 export default PostAdd;

@@ -1,63 +1,34 @@
-import React from 'react';
+import { connect } from 'react-redux';
 import { addLoggedUser} from '../Actions';
+import LoginForm from '../components/LoginForm'
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      requiredMailAlert: false,
-      requiredPasswordAlert: false,
-      wrongCredentials: false,
+const checkLoginCredentials = (mail, password) => {
+  if (mail === 'alice@laboratoria.la' && password === 'lab'){
+      return true;
+  }
+  return false;
+};
+
+const mapStateToProps = (state) => {
+  return {}
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onClickLogin: (mail, password) => {
+      if (checkLoginCredentials(mail, password)) {
+        dispatch(addLoggedUser(mail));
+      } else {
+        //wrong credential error
+      }
     }
   }
+};
 
-  checkLoginCredentials(mail, password) {
-    if (mail === 'alice@laboratoria.la' && password === 'lab'){
-        return true;
-    }
-    return false;
-  }
 
-  render() {
-    return (
-      <div className="card">
-        <div className="card-body">
-          <form
-            className="form-signin"
-            onSubmit={e => {
-              e.preventDefault();
-              if (this.checkLoginCredentials(this.mail.value.trim(),this.password.value.trim())) {
-                this.props.store.dispatch(addLoggedUser(this.mail.value));
-              } else {
-                this.alertWrongCredentials();
-                this.password.value = '';
-              }
-            }}>
-            <h1 className="h3 mb-3 font-weight-normal">Reactibook</h1>
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email address"
-                ref={node => {this.mail = node}}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                ref={node => {this.password = node}}
-              />
-            </div>
-            <div className="form-group">
-              <button className="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
-}
+const Login = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginForm);
 
 export default Login;
