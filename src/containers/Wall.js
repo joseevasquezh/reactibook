@@ -1,50 +1,24 @@
 import React from 'react';
-import PostList from '../components/PostList';
+import VisiblePostList from '../containers/VisiblePostList';
 import PostAdd from '../components/PostAdd';
 import VisibilityFilterLinks from '../components/VisibilityFilterLinks';
-import {
-  addPost,
-  editPost,
-  deletePost,
-  setVisibilityFilter,
-  VisibilityFilters,
-} from '../Actions';
+import { addPost } from '../Actions';
 
 
 let nextPostId = 0;
 class Wall extends React.Component {
   render () {
-    const visiblePosts = GetVisiblePosts(this.props.store.getState().posts, this.props.store.getState().visibilityFilter);
     return (
       <div className="row">
         <div className="col">
           <h1> Reactibook </h1>
           <PostAdd onAddPost={(text,visibility) =>
             this.props.store.dispatch(addPost(nextPostId++,text,(visibility === 'friends' ? false : true)))}/>
-          <VisibilityFilterLinks
-            onClickFilter={(filter) => this.props.store.dispatch(setVisibilityFilter(filter))}
-            currentVisibilityFilter = {this.props.store.getState().visibilityFilter}
-          />
-          <PostList
-            posts={visiblePosts}
-            onClickSave={ (id, text)=> this.props.store.dispatch(editPost(id, text)) }
-            onClickDelete={ (id)=> this.props.store.dispatch(deletePost(id)) }
-          />
+          <VisibilityFilterLinks store = {this.props.store} />
+          <VisiblePostList store = {this.props.store} />
         </div>
       </div>
     );
-  }
-}
-
-
-const GetVisiblePosts = (posts, filter) => {
-  switch (filter){
-    case(VisibilityFilters.SHOW_PUBLIC):
-      return posts;
-    case(VisibilityFilters.SHOW_FRIENDS_ONLY):
-      return posts.filter(t => !t.isPublic);
-    default:
-      return posts;
   }
 }
 

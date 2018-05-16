@@ -1,34 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {VisibilityFilters} from '../Actions';
-import FilterLink from './FilterLink';
+import FilterLink from '../containers/FilterLink';
 
-const VisibilityFilterLinks = ({currentVisibilityFilter, onClickFilter}) => {
+const VisibilityFilterLinks = ({store}) => {
   return (
     <p>
-      <FilterLink
-        filter={VisibilityFilters.SHOW_PUBLIC}
-        onClickFilter={() => onClickFilter(VisibilityFilters.SHOW_PUBLIC)}
-        visibilityFilter = {currentVisibilityFilter}
-      >
+      <FilterLink filter={VisibilityFilters.SHOW_PUBLIC} store={store} >
         Público
       </FilterLink>
       {' '}
-      <FilterLink
-        filter={VisibilityFilters.SHOW_FRIENDS_ONLY}
-        onClickFilter={() => onClickFilter(VisibilityFilters.SHOW_FRIENDS_ONLY)}
-        visibilityFilter = {currentVisibilityFilter}
-      >
+      <FilterLink filter={VisibilityFilters.SHOW_FRIENDS_ONLY} store={store} >
         Amigos
       </FilterLink>
     </p>
   )
-
-}
-
-VisibilityFilterLinks.propTypes = {
-  currentVisibilityFilter: PropTypes.string.isRequired,
-  onClickFilter: PropTypes.func.isRequired
 }
 
 export default VisibilityFilterLinks;
