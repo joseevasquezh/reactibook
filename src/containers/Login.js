@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
-import { addLoggedUser} from '../Actions';
+import {
+  addLoggedUser,
+  displayLoginError,
+  LoginErrors,
+} from '../Actions';
 import LoginForm from '../components/LoginForm'
 
 const checkLoginCredentials = (mail, password) => {
@@ -10,16 +14,32 @@ const checkLoginCredentials = (mail, password) => {
 };
 
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    error: state.errorStatus.error,
+    errorMessage: state.errorStatus.errorMessage,
+  }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onClickLogin: (mail, password) => {
-      if (checkLoginCredentials(mail, password)) {
+      if (!mail) {
+        dispatch(displayLoginError(
+          LoginErrors.MAIL_FIELD_ERROR,
+          'Debe ingresar un correo electrónico'
+        ))
+      }else if (!password) {
+        dispatch(displayLoginError(
+          LoginErrors.PASSWORD_FIELD_ERROR,
+          'Debe ingresar una contraseña'
+        ))
+      }else if (checkLoginCredentials(mail, password)) {
         dispatch(addLoggedUser(mail));
       } else {
-        //wrong credential error
+        dispatch(displayLoginError(
+          LoginErrors.GLOBAL_ERROR,
+          'Correo electrónico y contraseña son invalidos'
+        ))
       }
     }
   }

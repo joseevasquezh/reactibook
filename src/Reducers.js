@@ -6,6 +6,7 @@ import {
   SET_VISIBILITY_FILTER,
   ADD_LOGGED_USER,
   REMOVE_LOGGED_USER,
+  DISPLAY_LOGIN_ERROR,
   VisibilityFilters
 } from './Actions';
 
@@ -56,11 +57,24 @@ function loggedUser(state='', action) {
   }
 }
 
+function errorStatus(state={}, action) {
+  switch (action.type) {
+    case DISPLAY_LOGIN_ERROR:
+      return {
+        error: action.error,
+        errorMessage: action.text
+      }
+    default:
+      return {}
+  }
+}
+
 
 const wallApp = combineReducers ({
   visibilityFilter,
   posts,
   loggedUser,
+  errorStatus,
 })
 
 export default wallApp;
