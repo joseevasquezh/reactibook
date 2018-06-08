@@ -4,6 +4,7 @@ import {
   EDIT_POST,
   DELETE_POST,
   SET_VISIBILITY_FILTER,
+  AUTHENTICATE_USER,
   ADD_LOGGED_USER,
   REMOVE_LOGGED_USER,
   DISPLAY_LOGIN_ERROR,
@@ -46,26 +47,52 @@ function posts (state = [], action) {
   }
 }
 
-function loggedUser(state='', action) {
-  switch (action.type) {
-    case ADD_LOGGED_USER:
-      return action.mail
-    case REMOVE_LOGGED_USER:
-      return {}
-    default:
-      return state
-  }
-}
 
-function errorStatus(state={}, action) {
+function user(
+  state={
+    isAuthenticating: false,
+    uid: "",
+    mail: "",
+    errorType: "",
+    errorMessage: "",
+  },
+  action
+) {
   switch (action.type) {
+    case AUTHENTICATE_USER:
+      return {
+        isAuthenticating: true,
+        uid: "",
+        mail: "",
+        errorType: "",
+        errorMessage: "",
+      }
+    case ADD_LOGGED_USER:
+      return {
+        isAuthenticating: false,
+        uid: action.uid,
+        mail: action.mail,
+        errorType: "",
+        errorMessage: "",
+      }
+    case REMOVE_LOGGED_USER:
+      return {
+        isAuthenticating: false,
+        uid: "",
+        mail: "",
+        errorType: "",
+        errorMessage: "",
+      }
     case DISPLAY_LOGIN_ERROR:
       return {
-        error: action.error,
-        errorMessage: action.text
+        isAuthenticating: false,
+        uid: "",
+        mail: "",
+        errorType: action.errorType,
+        errorMessage: action.text,
       }
     default:
-      return {}
+      return state
   }
 }
 
@@ -73,8 +100,7 @@ function errorStatus(state={}, action) {
 const wallApp = combineReducers ({
   visibilityFilter,
   posts,
-  loggedUser,
-  errorStatus,
+  user,
 })
 
 export default wallApp;

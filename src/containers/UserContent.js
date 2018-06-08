@@ -4,7 +4,7 @@ import App from '../components/App';
 
 const mapStateToProps = (state) => {
   return {
-    isLogged: !(state.loggedUser === "")
+    isLogged: !(state.user.mail === "")
   }
 };
 

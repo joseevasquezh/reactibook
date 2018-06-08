@@ -1,22 +1,17 @@
 import { connect } from 'react-redux';
 import {
-  addLoggedUser,
   displayLoginError,
   LoginErrors,
+  requestAuthentication,
 } from '../Actions';
 import LoginForm from '../components/LoginForm'
 
-const checkLoginCredentials = (mail, password) => {
-  if (mail === 'alice@laboratoria.la' && password === 'lab'){
-      return true;
-  }
-  return false;
-};
 
 const mapStateToProps = (state) => {
   return {
-    error: state.errorStatus.error,
-    errorMessage: state.errorStatus.errorMessage,
+    error: state.user.errorType,
+    errorMessage: state.user.errorMessage,
+    loginButtonDisabled: state.user.isAuthenticating,
   }
 };
 
@@ -33,13 +28,8 @@ const mapDispatchToProps = (dispatch) => {
           LoginErrors.PASSWORD_FIELD_ERROR,
           'Debe ingresar una contraseña'
         ))
-      }else if (checkLoginCredentials(mail, password)) {
-        dispatch(addLoggedUser(mail));
-      } else {
-        dispatch(displayLoginError(
-          LoginErrors.GLOBAL_ERROR,
-          'Correo electrónico y contraseña son invalidos'
-        ))
+      }else {
+        dispatch(requestAuthentication(mail, password));
       }
     }
   }

@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
 import './css/index.css';
+import wallApp from './Reducers';
 import UserContent from './containers/UserContent';
 import registerServiceWorker from './registerServiceWorker';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import wallApp from './Reducers';
 
 
-const store = createStore(wallApp);
 
-
-console.log(store.getState());
-
-store.subscribe(() =>
-  console.log(store.getState())
+const loggerMiddleware = createLogger();
+const store = createStore(
+  wallApp,
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
 
@@ -26,6 +26,7 @@ const render = () => {
     document.getElementById('root')
   );
 }
+
 
 store.subscribe(render);
 render();

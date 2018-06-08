@@ -1,7 +1,7 @@
 import React from 'react';
 import { LoginErrors } from '../Actions';
 
-const LoginForm = ({error, errorMessage,  onClickLogin}) => {
+const LoginForm = ({error, errorMessage, loginButtonDisabled, onClickLogin}) => {
 
   return (
     <div className="card">
@@ -40,7 +40,10 @@ const LoginForm = ({error, errorMessage,  onClickLogin}) => {
             </div>
           </div>
           <div className="form-group">
-            <button className="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
+            <button
+              className="btn btn-lg btn-primary btn-block"
+              disabled={loginButtonDisabled}
+              type="submit">Iniciar sesión</button>
           </div>
         </form>
       </div>
