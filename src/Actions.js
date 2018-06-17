@@ -1,5 +1,6 @@
 import firebaseApp from './firebase';
 
+export const INITIALIZE_POSTS = 'INITIALIZE_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const DELETE_POST = 'DELETE_POST';
@@ -20,6 +21,13 @@ export const LoginErrors = {
   MAIL_FIELD_ERROR: 'MAIL_FIELD_ERROR',
   PASSWORD_FIELD_ERROR: 'PASSWORD_FIELD_ERROR'
 };
+
+export function initializePosts(posts) {
+  return {
+    type: INITIALIZE_POSTS,
+    posts: posts
+  }
+}
 
 export function addPost(id, text, isPublic) {
   return {
@@ -80,6 +88,24 @@ export function displayLoginError(error, text) {
   };
 }
 
+export function createPost(text, isPublic) {
+  return (dispatch) => {
+    var userId = firebaseApp.auth().currentUser.uid;
+
+    var postsRef = firebaseApp.database().ref('users/' + userId + '/posts');
+
+    var newPostRef = postsRef.push();
+    newPostRef.set(
+      {
+        text: text,
+        isPublic: isPublic
+      }
+    ).then(function() {
+      dispatch(addPost(newPostRef.key, text, isPublic));
+    });
+  }
+}
+
 export function requestAuthentication(mail, password) {
   return (dispatch) => {
 
@@ -88,20 +114,33 @@ export function requestAuthentication(mail, password) {
     return firebaseApp.auth().signInWithEmailAndPassword(mail, password)
       .then(
         function() {
-          console.log('loged');
+
           var user = firebaseApp.auth().currentUser;
 
           if (user != null) {
-            user.providerData.forEach(function (profile) {
-              dispatch(addLoggedUser(profile.uid, profile.email))
-            });
+
+            var posts = [];
+
+            firebaseApp.database().ref('/users/' + user.uid +'/posts').once('value')
+            .then(
+              function(snapshot) {
+                snapshot.forEach(function (item) {
+                  posts = posts.concat({
+                    id: item.key,
+                    text: item.val().text,
+                    isPublic: item.val().isPublic
+                  })
+                });
+                dispatch(initializePosts(posts));
+                dispatch(addLoggedUser(user.uid, user.email))
+              }
+            );
           } else {
             dispatch(displayLoginError(
               LoginErrors.GLOBAL_ERROR,
              'Se ha presentado un error inesperado. Intente de nuevo'
             ));
           }
-
 
         },
         function(error) {

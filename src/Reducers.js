@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import {
+  INITIALIZE_POSTS,
   ADD_POST,
   EDIT_POST,
   DELETE_POST,
@@ -25,6 +26,8 @@ function visibilityFilter(state = SHOW_PUBLIC, action) {
 
 function posts (state = [], action) {
   switch (action.type) {
+    case INITIALIZE_POSTS:
+      return action.posts
     case ADD_POST:
       return state.concat({
           id: action.id,

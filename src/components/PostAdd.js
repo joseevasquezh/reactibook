@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addPost } from '../Actions';
+import { createPost } from '../Actions';
 
 let PostAdd = ({dispatch}) => {
 
   let input;
   let select;
-
-  let nextPostId = 0;
 
   return (
     <div className="card">
@@ -18,7 +16,7 @@ let PostAdd = ({dispatch}) => {
             if (!input.value.trim()) {
               return
             }
-            dispatch(addPost(nextPostId++, input.value, (select.value === 'friends' ? false : true)))
+            dispatch(createPost(input.value, (select.value === 'friends' ? false : true)))
             input.value = ''
           }}
         >
