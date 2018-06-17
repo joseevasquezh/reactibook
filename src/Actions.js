@@ -106,6 +106,30 @@ export function createPost(text, isPublic) {
   }
 }
 
+export function updatePost(id,text) {
+  return (dispatch) => {
+
+    var userId = firebaseApp.auth().currentUser.uid;
+    var postRef = firebaseApp.database().ref('users/' + userId + '/posts/' + id);
+
+    postRef.update({text: text});
+
+    dispatch(editPost(id,text));
+  }
+}
+
+export function destroyPost(id) {
+  return (dispatch) => {
+
+    var userId = firebaseApp.auth().currentUser.uid;
+    var postRef = firebaseApp.database().ref('users/' + userId + '/posts/' + id);
+
+    postRef.remove();
+
+    dispatch(deletePost(id));
+  }
+}
+
 export function requestAuthentication(mail, password) {
   return (dispatch) => {
 

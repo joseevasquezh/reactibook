@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { editPost, deletePost, VisibilityFilters } from '../Actions';
+import { updatePost, destroyPost, VisibilityFilters } from '../Actions';
 import PostList from '../components/PostList';
 
 const GetVisiblePosts = (posts, filter) => {
@@ -22,10 +22,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onClickSave: (id, text) => {
-      dispatch(editPost(id, text))
+      dispatch(updatePost(id, text))
     },
     onClickDelete: (id) => {
-      dispatch(deletePost(id))
+      dispatch(destroyPost(id))
     }
   }
 };
