@@ -1,11 +1,14 @@
 import { combineReducers } from 'redux';
 import {
+  INITIALIZE_POSTS,
   ADD_POST,
   EDIT_POST,
   DELETE_POST,
   SET_VISIBILITY_FILTER,
+  AUTHENTICATE_USER,
   ADD_LOGGED_USER,
   REMOVE_LOGGED_USER,
+  DISPLAY_LOGIN_ERROR,
   VisibilityFilters
 } from './Actions';
 
@@ -23,6 +26,8 @@ function visibilityFilter(state = SHOW_PUBLIC, action) {
 
 function posts (state = [], action) {
   switch (action.type) {
+    case INITIALIZE_POSTS:
+      return action.posts
     case ADD_POST:
       return state.concat({
           id: action.id,
@@ -45,12 +50,50 @@ function posts (state = [], action) {
   }
 }
 
-function loggedUser(state='', action) {
+
+function user(
+  state={
+    isAuthenticating: false,
+    uid: "",
+    mail: "",
+    errorType: "",
+    errorMessage: "",
+  },
+  action
+) {
   switch (action.type) {
+    case AUTHENTICATE_USER:
+      return {
+        isAuthenticating: true,
+        uid: "",
+        mail: "",
+        errorType: "",
+        errorMessage: "",
+      }
     case ADD_LOGGED_USER:
-      return action.mail
+      return {
+        isAuthenticating: false,
+        uid: action.uid,
+        mail: action.mail,
+        errorType: "",
+        errorMessage: "",
+      }
     case REMOVE_LOGGED_USER:
-      return {}
+      return {
+        isAuthenticating: false,
+        uid: "",
+        mail: "",
+        errorType: "",
+        errorMessage: "",
+      }
+    case DISPLAY_LOGIN_ERROR:
+      return {
+        isAuthenticating: false,
+        uid: "",
+        mail: "",
+        errorType: action.errorType,
+        errorMessage: action.text,
+      }
     default:
       return state
   }
@@ -60,7 +103,7 @@ function loggedUser(state='', action) {
 const wallApp = combineReducers ({
   visibilityFilter,
   posts,
-  loggedUser,
+  user,
 })
 
 export default wallApp;

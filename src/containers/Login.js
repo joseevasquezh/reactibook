@@ -1,63 +1,44 @@
-import React from 'react';
-import { addLoggedUser} from '../Actions';
+import { connect } from 'react-redux';
+import {
+  displayLoginError,
+  LoginErrors,
+  requestAuthentication,
+} from '../Actions';
+import LoginForm from '../components/LoginForm'
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      requiredMailAlert: false,
-      requiredPasswordAlert: false,
-      wrongCredentials: false,
+
+const mapStateToProps = (state) => {
+  return {
+    error: state.user.errorType,
+    errorMessage: state.user.errorMessage,
+    loginButtonDisabled: state.user.isAuthenticating,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onClickLogin: (mail, password) => {
+      if (!mail) {
+        dispatch(displayLoginError(
+          LoginErrors.MAIL_FIELD_ERROR,
+          'Debe ingresar un correo electrónico'
+        ))
+      }else if (!password) {
+        dispatch(displayLoginError(
+          LoginErrors.PASSWORD_FIELD_ERROR,
+          'Debe ingresar una contraseña'
+        ))
+      }else {
+        dispatch(requestAuthentication(mail, password));
+      }
     }
   }
+};
 
-  checkLoginCredentials(mail, password) {
-    if (mail === 'alice@laboratoria.la' && password === 'lab'){
-        return true;
-    }
-    return false;
-  }
 
-  render() {
-    return (
-      <div className="card">
-        <div className="card-body">
-          <form
-            className="form-signin"
-            onSubmit={e => {
-              e.preventDefault();
-              if (this.checkLoginCredentials(this.mail.value.trim(),this.password.value.trim())) {
-                this.props.store.dispatch(addLoggedUser(this.mail.value));
-              } else {
-                this.alertWrongCredentials();
-                this.password.value = '';
-              }
-            }}>
-            <h1 className="h3 mb-3 font-weight-normal">Reactibook</h1>
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email address"
-                ref={node => {this.mail = node}}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                ref={node => {this.password = node}}
-              />
-            </div>
-            <div className="form-group">
-              <button className="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
-}
+const Login = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginForm);
 
 export default Login;

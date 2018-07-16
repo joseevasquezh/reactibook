@@ -15,7 +15,11 @@ const PostView = ({text, onClickEdit, onClickDelete}) => (
         </button>
         <button
           className="btn btn-link"
-          onClick={onClickDelete}>
+          onClick={() => {
+            if (window.confirm("Esta operacion no puede ser revertida. ¿Desea continuar?")) {
+              onClickDelete()
+            }
+          }}>
           Eliminar
         </button>
       </div>
